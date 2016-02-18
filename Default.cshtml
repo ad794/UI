@@ -1,0 +1,90 @@
+﻿@{
+    Layout = "~/_SiteLayout.cshtml";
+    Page.Title = "Home Page";
+}
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>@Page.Title.</h1>
+            <h2>Service Layer Demo</h2>
+        </hgroup>
+        <p>
+           This is the UI layer that will connect with Service layer using Service Fabric WebAPI</a>.
+        </p>
+    </div>
+</section>
+}
+
+<h3>This is the UI layer that will connect with Service layer using Service Fabric WebAPI</h3>
+<br />
+<div id="count"><h2>Results will be displayed here</h2></div>
+<br />
+
+<div>
+    <button class="btn">Call Service Fabric Counter</button>
+</div>
+
+<p>
+    <label>House number</label>    
+<input type="text" id="txt" />
+    </p>
+
+<p>
+    <label>postcode</label>
+    <input type="text" id="postcode" />
+</p>
+
+<button class="postValues">Address Lookup</button>
+<br/>
+<div id="sendResult"><h2>Address Results will be displayed here</h2></div>
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+    var serviceUrl = "http://localhost:31001/api/values";
+        var iteration = 0;
+
+        $(function () {
+            $('.btn').click(callServiceFabric);
+            $('.postValues').click(postServicFabric);
+
+            function callServiceFabric() {
+                //alert("hello");
+                $.ajax({
+                    url: serviceUrl ,
+                    dataType: "text",
+                    method: 'GET'
+                })
+               .done(function (countResult) {
+                   $('#count').html(countResult)
+               });
+            }
+
+            function postServicFabric() {
+                var val = $("#txt").val() + $("#postcode").val().toLocaleLowerCase();
+               // alert(val);
+                var dataJSON = {"value" : val};
+
+                $.ajax({
+                    url: serviceUrl,
+                    method: 'POST',
+                    data: dataJSON
+                    
+                })
+               .done(function (wordResult) {
+                   $('#sendResult').html(wordResult);
+               });
+            }
+
+        });
+
+</script>
